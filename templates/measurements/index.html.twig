@@ -25,8 +25,12 @@
                 <td>{{ measurement.humidity }}</td>
                 <td>{{ measurement.pressure }}</td>
                 <td>
+                    {% if is_granted('ROLE_MEASUREMENTS_SHOW') %}
                     <a href="{{ path('app_measurements_show', {'id': measurement.id}) }}">show</a>
+                    {% endif %}
+                    {% if is_granted('ROLE_MEASUREMENTS_EDIT') %}
                     <a href="{{ path('app_measurements_edit', {'id': measurement.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -36,6 +40,7 @@
         {% endfor %}
         </tbody>
     </table>
-
+    {% if is_granted('ROLE_MEASUREMENTS_NEW') %}
     <a href="{{ path('app_measurements_new') }}">Create new</a>
+    {% endif %}
 {% endblock %}

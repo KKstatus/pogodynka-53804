@@ -10,11 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/measurements')]
 final class MeasurementsController extends AbstractController
 {
     #[Route(name: 'app_measurements_index', methods: ['GET'])]
+    #[IsGranted('ROLE_MEASUREMENTS_INDEX')]
     public function index(MeasurementsRepository $measurementsRepository): Response
     {
         return $this->render('measurements/index.html.twig', [
@@ -23,6 +25,7 @@ final class MeasurementsController extends AbstractController
     }
 
     #[Route('/new', name: 'app_measurements_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_MEASUREMENTS_NEW')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $measurement = new Measurements();
@@ -45,6 +48,7 @@ final class MeasurementsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_measurements_show', methods: ['GET'])]
+    #[IsGranted('ROLE_MEASUREMENTS_SHOW')]
     public function show(Measurements $measurement): Response
     {
         return $this->render('measurements/show.html.twig', [
@@ -53,6 +57,7 @@ final class MeasurementsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_measurements_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_MEASUREMENTS_EDIT')]
     public function edit(Request $request, Measurements $measurement, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(MeasurementsType::class, $measurement, [
@@ -73,6 +78,7 @@ final class MeasurementsController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_measurements_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_MEASUREMENTS_DELETE')]
     public function delete(Request $request, Measurements $measurement, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$measurement->getId(), $request->getPayload()->getString('_token'))) {
