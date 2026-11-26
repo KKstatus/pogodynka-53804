@@ -71,6 +71,11 @@ class Measurements
         return $this;
     }
 
+    public function getFahrenheit(): float
+    {
+        return round((float) $this->getCelsius() * 9 / 5 + 32, 2);
+    }
+
     public function getHumidity(): ?int
     {
         return $this->humidity;
